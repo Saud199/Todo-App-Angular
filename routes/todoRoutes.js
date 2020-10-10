@@ -7,7 +7,8 @@ const Todo = require('../models/todoModel.js');
 
 
 // Get Todo
-router.get('/' , (req , res) => {res.header("Access-Control-Allow-Origin", "*");
+router.get('/' , (req , res) => {
+    //res.header("Access-Control-Allow-Origin", "*");
     Todo.find()
         .sort({date : -1})          // -1 means descending order
         .then((todos) => res.json(todos))       // "todos" is the Collection Name in the Database
@@ -16,6 +17,7 @@ router.get('/' , (req , res) => {res.header("Access-Control-Allow-Origin", "*");
 
 //  Add Todo
 router.post('/' , (req , res) => {
+    //res.header("Access-Control-Allow-Origin", "*");
     const newTodo = new Todo({
         name : req.body.name
     })

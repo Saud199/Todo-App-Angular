@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.scss']
 })
+
 export class TodoComponent implements OnInit {
 
   todoArray :any[] = [];
@@ -17,26 +18,82 @@ export class TodoComponent implements OnInit {
     axios.get('http://localhost:8080/api/todoDB/')
              .then(res => {
 
-                //todoArray.push(res.data.map(todo => todo.name))
-                //this.setState({todoArray})
-                //alert(todoArray);
-
                 for(var i=0;i<res.data.length;i++) {
                     var obj = {
                         id : res.data[i]._id,
                         name : res.data[i].name,
                         date : res.data[i].added_date
                     }
-                    //this.todoArray.push(obj)
                     this.todoArray.push(obj);
                     //alert(this.todoArray[0].name)
-                    //this.setState({todoArray})
                 }
 
              })
              .catch(err => {
                  console.log(err);
              })
+  }
+
+
+  addTodo() : void {
+    let todo = (<HTMLInputElement> document.getElementById('taskName')).value;
+
+    if(todo.length > 0) {
+
+      const newTodo = {
+          name : todo
+      }
+
+      axios.post('http://localhost:8080/api/todoDB/' , newTodo)
+           .then(function (res) {
+              Swal.fire({
+                title: 'Success',
+                text: "Task has been added",
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                  if (result.value) {
+                    window.location.href = '/';
+                  }
+                })
+            })
+    }
+    else {
+      Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Please type something'
+      })
+    }
+  }
+
+
+  deleteTodo(i : any) : void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.value) {
+
+          axios.delete('http://localhost:8080/api/todoDB/'+this.todoArray[i].id);
+          this.todoArray = this.todoArray.filter(todo => todo.id != this.todoArray[i].id);
+
+          Swal.fire(
+            'Deleted!',
+            'Your task has been deleted.',
+            'success'
+          )
+
+        }
+      })
   }
 
 }

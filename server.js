@@ -1,11 +1,15 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const path = require("path");
+var cors = require('cors');
 
 const app = express();
 
 //  Middleware
 app.use(express.json());
+
+// To solve CORS related issues
+app.use(cors());
 
 //  Database Connection
 //const db = 'mongodb://localhost/todoDB';      // Connection with Local MongoDB Database
