@@ -32,11 +32,11 @@ app.use('/api/todoDB' , require('./routes/todoRoutes.js'));
 
 
 // Listen to Port
-// app.use(express.static('./dist/my-app'));
+app.use(express.static('./dist/my-app'));
 
-// app.get('*' , function (req , res) {
-//     res.sendFile(path.join(__dirname , '/dist/my-app/index.html'));
-// });
+app.get('*' , function (req , res) {
+    res.sendFile(path.join(__dirname , '/dist/my-app/index.html'));
+});
 
 const port = process.env.PORT || 8080;
 
