@@ -18,6 +18,11 @@ body {
 header {
     background: $primary;
     padding: 1em 0;
+    
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 999;
 
     a {
         color: white;
