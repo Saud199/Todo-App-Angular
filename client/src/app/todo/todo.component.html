@@ -24,7 +24,7 @@
           <img src="../../assets/images/icon.png" class="card-img-top" alt="Todo Logo" style="height: 140;">
           <div class="card-body">
             <h5 class="card-title" style="text-align: center;">{{todo.name}}</h5>
-            <button type="button" class="btn btn-primary" style="float: left;">UPDATE TASK</button>
+            <button type="button" class="btn btn-primary" (click)="updateTodo(indexOfelement)" style="float: left;">UPDATE TASK</button>
             <button type="button" class="btn btn-danger" (click)="deleteTodo(indexOfelement)" style="float: right;">DELETE TASK</button>
           </div>
       </div>

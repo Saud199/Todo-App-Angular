@@ -18,8 +18,8 @@ export class TodoComponent implements OnInit {
     axios.get('http://localhost:8080/api/todoDB/')
              .then(res => {
 
-                for(var i=0;i<res.data.length;i++) {
-                    var obj = {
+                for(let i=0;i<res.data.length;i++) {
+                    let obj = {
                         id : res.data[i]._id,
                         name : res.data[i].name,
                         date : res.data[i].added_date
@@ -94,6 +94,41 @@ export class TodoComponent implements OnInit {
 
         }
       })
+  }
+
+
+  updateTodo(i : any) : void {
+    const todo = prompt("Enter Task...");
+
+    const updatedTodo = {
+      name : todo
+    } 
+
+    if(updatedTodo.name != null) {
+      axios.put('http://localhost:8080/api/todoDB/'+this.todoArray[i].id , updatedTodo)
+           .then( function (res) {
+              Swal.fire({
+                  title: 'Success',
+                  text: "Task has been updated",
+                  icon: 'success',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Ok'
+              }).then((result) => {
+                  if (result.value) {
+                    window.location.href = '/';
+                  }
+                 })
+            })
+    } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Please type something'
+        })
+  }
+
   }
 
 }
