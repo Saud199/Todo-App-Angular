@@ -15,7 +15,7 @@ export class TodoComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    axios.get('http://localhost:8080/api/todoDB/')
+    axios.get('/api/todoDB/')
              .then(res => {
 
                 for(let i=0;i<res.data.length;i++) {
@@ -44,7 +44,7 @@ export class TodoComponent implements OnInit {
           name : todo
       }
 
-      axios.post('http://localhost:8080/api/todoDB/' , newTodo)
+      axios.post('/api/todoDB/' , newTodo)
            .then(function (res) {
               Swal.fire({
                 title: 'Success',
@@ -83,7 +83,7 @@ export class TodoComponent implements OnInit {
     }).then((result) => {
         if (result.value) {
 
-          axios.delete('http://localhost:8080/api/todoDB/'+this.todoArray[i].id);
+          axios.delete('/api/todoDB/'+this.todoArray[i].id);
           this.todoArray = this.todoArray.filter(todo => todo.id != this.todoArray[i].id);
 
           Swal.fire(
@@ -105,7 +105,7 @@ export class TodoComponent implements OnInit {
     } 
 
     if(updatedTodo.name != null) {
-      axios.put('http://localhost:8080/api/todoDB/'+this.todoArray[i].id , updatedTodo)
+      axios.put('/api/todoDB/'+this.todoArray[i].id , updatedTodo)
            .then( function (res) {
               Swal.fire({
                   title: 'Success',
