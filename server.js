@@ -32,7 +32,7 @@ app.use('/api/todoDB' , require('./routes/todoRoutes.js'));
 
 
 // Listen to Port
-//app.use(express.static('./client/dist/client'));
+app.use(express.static('./client/dist/client'));
 app.use(express.static('./dist/client'));
 
 app.get('*' , function (req , res) {
