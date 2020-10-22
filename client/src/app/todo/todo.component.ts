@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 export class TodoComponent implements OnInit {
 
   todoArray :any[] = [];
+  taskID : any;
 
   constructor() { }
 
@@ -45,20 +46,29 @@ export class TodoComponent implements OnInit {
       }
 
       axios.post('/api/todoDB/' , newTodo)
-           .then(function (res) {
-              Swal.fire({
-                title: 'Success',
-                text: "Task has been added",
-                icon: 'success',
-                showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ok'
-              }).then((result) => {
-                  if (result.value) {
-                    window.location.href = '/';
-                  }
-                })
+           .then((res) => {
+                    Swal.fire({
+                          title: 'Success',
+                          text: "Task has been added",
+                          icon: 'success',
+                          showCancelButton: false,
+                          confirmButtonColor: '#3085d6',
+                          cancelButtonColor: '#d33',
+                          confirmButtonText: 'Ok'
+                    })
+                    // .then((result) => {
+                    //     if (result.value) {
+                    //       window.location.href = '/';
+                    //     }
+                    //   })
+
+                    let obj : any = {
+                      id : res.data._id,
+                      name : res.data.name,
+                      date : res.data.added_date
+                    }
+                    this.todoArray = this.todoArray.concat(obj);
+                  
             })
     }
     else {
@@ -68,6 +78,7 @@ export class TodoComponent implements OnInit {
           text: 'Please type something'
       })
     }
+    (<HTMLInputElement> document.getElementById('taskName')).value="";
   }
 
 
@@ -97,29 +108,47 @@ export class TodoComponent implements OnInit {
   }
 
 
-  updateTodo(i : any) : void {
-    const todo = prompt("Enter Task...");
+  getTaskID(i : any) : void {
+    this.taskID = i;
+  }
+
+  updateTodo() : void {
+    //alert(this.taskID);
+    let todo = (<HTMLInputElement> document.getElementById('updatedNewTask')).value;
+    // alert(todo);
+
+  //   const todo = prompt("Enter Task...");
 
     const updatedTodo = {
       name : todo
     } 
 
     if(updatedTodo.name != null) {
-      axios.put('/api/todoDB/'+this.todoArray[i].id , updatedTodo)
-           .then( function (res) {
-              Swal.fire({
-                  title: 'Success',
-                  text: "Task has been updated",
-                  icon: 'success',
-                  showCancelButton: false,
-                  confirmButtonColor: '#3085d6',
-                  cancelButtonColor: '#d33',
-                  confirmButtonText: 'Ok'
-              }).then((result) => {
-                  if (result.value) {
-                    window.location.href = '/';
-                  }
-                 })
+      axios.put('/api/todoDB/'+this.todoArray[this.taskID].id , updatedTodo)
+           .then((res) => {
+                    Swal.fire({
+                        title: 'Success',
+                        text: "Task has been updated",
+                        icon: 'success',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok'
+                    })
+                      // .then((result) => {
+                      //     if (result.value) {
+                      //       window.location.href = '/';
+                      //     }
+                      // })
+
+                    let obj : any = {
+                      id : res.data._id,
+                      name : res.data.name,
+                      date : res.data.added_date
+                    }
+
+                    this.todoArray.splice( this.taskID , 1 , obj );
+            
             })
     } else {
         Swal.fire({
@@ -128,6 +157,7 @@ export class TodoComponent implements OnInit {
           text: 'Please type something'
         })
   }
+  (<HTMLInputElement> document.getElementById('updatedNewTask')).value="";
 
   }
 
